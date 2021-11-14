@@ -23,13 +23,30 @@ class BinarySearchTree(object):
             else:
                 node.right = self._insert_value(node.right, data)
         return node
+    
+    def find(self, key):
+        return self._find_value(self.root, key)
+
+    def _find_value(self, root, key):
+        if root is None or root.data == key:
+            return root is not None
+        elif key < root.data:
+            return self._find_value(root.left, key)
+        else:
+            return self._find_value(root.right, key)
+
         
 
+#Insert
 array = [40, 4, 34, 45, 14, 55, 48, 13, 15, 49, 47]
 
 bst = BinarySearchTree()
 for x in array:
     bst.insert(x)
+
+# Find
+print(bst.find(15)) # True
+print(bst.find(17)) # False
 
 
 
