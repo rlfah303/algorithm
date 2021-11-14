@@ -35,7 +35,36 @@ class BinarySearchTree(object):
         else:
             return self._find_value(root.right, key)
 
-        
+    def delete(self, key):
+        self.root, deleted = self._delete_value(self.root, key)
+        return deleted
+
+    def _delete_value(self, node, key):
+        if node is None:
+            return node, False
+
+        deleted = False
+        if key == node.data:
+            deleted = True
+            if node.left and node.right:
+                # replace the node to the leftmost of node.right
+                parent, child = node, node.right
+                while child.left is not None:
+                    parent, child = child, child.left
+                child.left = node.left
+                if parent != node:
+                    parent.left = child.right
+                    child.right = node.right
+                node = child
+            elif node.left or node.right:
+                node = node.left or node.right
+            else:
+                node = None
+        elif key < node.data:
+            node.left, deleted = self._delete_value(node.left, key)
+        else:
+            node.right, deleted = self._delete_value(node.right, key)
+        return node, deleted
 
 #Insert
 array = [40, 4, 34, 45, 14, 55, 48, 13, 15, 49, 47]
@@ -47,6 +76,11 @@ for x in array:
 # Find
 print(bst.find(15)) # True
 print(bst.find(17)) # False
+
+# Delete
+print(bst.delete(55)) # True
+print(bst.delete(14)) # True
+print(bst.delete(11)) # False
 
 
 
